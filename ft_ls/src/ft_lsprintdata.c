@@ -6,7 +6,7 @@
 /*   By: msoudan <msoudan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/28 17:16:29 by msoudan           #+#    #+#             */
-/*   Updated: 2016/01/28 19:24:11 by msoudan          ###   ########.fr       */
+/*   Updated: 2016/01/28 21:26:20 by msoudan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,13 +85,13 @@ static void		ft_lsprintdate(time_t date)
 	ft_putchar(' ');
 }
 
-static void		ft_lsprintlong(t_list **data)
+static void		ft_lsprintlong(t_list **data, int dir)
 {
 	t_list		*tmp;
 	int			array[4] = {0, 0, 0, 0};
 
 	ft_lsgetspaces(array, data);
-	if ((tmp = *data) != NULL)
+	if ((tmp = *data) != NULL && (ft_lstsize(tmp) > 1 || dir))
 	{
 		ft_putstr("total ");
 		ft_putendl(ft_itoa(ft_lsblkcnt(tmp)));
@@ -114,13 +114,13 @@ static void		ft_lsprintlong(t_list **data)
 	}
 }
 
-void			ft_lsprintdata(int longformat, t_list **data)
+void			ft_lsprintdata(int longformat, t_list **data, int dir)
 {
 	t_list		*tmp;
 
 	tmp = *data;
 	if (longformat == 108)
-		ft_lsprintlong(&tmp);
+		ft_lsprintlong(&tmp, dir);
 	else
 	{
 		while (tmp != NULL)

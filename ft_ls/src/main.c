@@ -6,7 +6,7 @@
 /*   By: msoudan <msoudan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/19 23:45:58 by msoudan           #+#    #+#             */
-/*   Updated: 2016/01/28 19:48:31 by msoudan          ###   ########.fr       */
+/*   Updated: 2016/01/28 21:38:53 by msoudan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static int		ft_getoptions(int *option, char **argv)
 
 	i = 0;
 	list = "Ralrt";
-	while (argv[++i] != 0 && argv[i][0] == '-')
+	while (argv[++i] != 0 && argv[i][0] == '-' && ft_strcmp(argv[i], "-"))
 	{
 		j = 0;
 		if (!ft_strcmp(argv[i], "--"))

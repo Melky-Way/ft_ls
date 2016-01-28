@@ -6,7 +6,7 @@
 /*   By: msoudan <msoudan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/18 13:54:27 by msoudan           #+#    #+#             */
-/*   Updated: 2015/06/08 17:47:46 by msoudan          ###   ########.fr       */
+/*   Updated: 2016/01/28 21:38:06 by msoudan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,7 @@ static void		ft_split_list(t_list **dir, t_list **file)
 		if (stat((char *)tmp->content, &sb) == 0 && !S_ISDIR(sb.st_mode))
 		{
 			ft_lstpushback(file, tmp->content, tmp->content_size);
-			del = tmp;
-			if (del == *dir)
+			if ((del = tmp) == *dir)
 				*dir = (*dir)->next;
 			tmp = tmp->next;
 			if (prev != NULL)
@@ -75,10 +74,10 @@ static void		ft_ls_file(int *option, t_list **directory)
 		elem = elem->next;
 	}
 	ft_lssortdata(option[3], option[4], &data);
-	ft_lsprintdata(option[2], &data);
+	ft_lsprintdata(option[2], &data, 0);
 	ft_lsclearlist(&data);
 	ft_lstclear(&file);
-	if (directory != NULL)
+	if (*directory != NULL)
 		ft_putchar('\n');
 }
 
@@ -96,7 +95,7 @@ void			ft_ls(int print, int *option, t_list **directory)
 		if (ft_lsgetdata(option, (char *)elem->content, &data) != -1)
 		{
 			ft_lssortdata(option[3], option[4], &data);
-			ft_lsprintdata(option[2], &data);
+			ft_lsprintdata(option[2], &data, 1);
 			if (option[0])
 				ft_lsrecursive(++print, option, (char *)elem->content, &data);
 			else if (*directory != NULL)
