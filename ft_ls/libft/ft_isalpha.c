@@ -1,0 +1,35 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_isalpha.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: msoudan <msoudan@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2013/11/19 15:49:16 by msoudan           #+#    #+#             */
+/*   Updated: 2014/03/22 15:08:05 by msoudan          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+
+int		ft_isalpha(int c)
+{
+	if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122))
+		return (1);
+	else
+		return (0);
+}
+
+int		ft_isalpha_str(char *str)
+{
+	int		i;
+
+	i = 0;
+	if (str[i] == 0)
+		return (0);
+	while (str[i] != 0 && ft_isalpha(str[i]) == 1)
+		i++;
+	if (str[i] == 0)
+		return (1);
+	return (0);
+}
