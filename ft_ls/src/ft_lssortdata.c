@@ -6,7 +6,7 @@
 /*   By: msoudan <msoudan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/28 17:16:29 by msoudan           #+#    #+#             */
-/*   Updated: 2015/06/08 17:23:06 by msoudan          ###   ########.fr       */
+/*   Updated: 2016/02/02 20:08:15 by msoudan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,12 @@
 #define TMP ((t_file *)tmp->content)
 #define POST ((t_file *)post->content)
 
-static void		ft_lstalpha(t_list **data)
+#define ALPHASORT (!mode && ft_strcmp(TMP->name, POST->name) > 0)
+#define TIMESORT (mode == 1 && (TMP->date < POST->date || \
+			(POST->date == TMP->date && ft_strcmp(TMP->name, POST->name) > 0)))
+#define SIZESORT (mode == 2 && TMP->size < POST->size)
+
+static void		ft_ls_sort(t_list **data, int mode)
 {
 	void		*datatmp;
 	t_list		*tmp;
@@ -25,33 +30,7 @@ static void		ft_lstalpha(t_list **data)
 	tmp = *data;
 	while (tmp != NULL && (post = tmp->next) != NULL)
 	{
-		if (ft_strcmp(TMP->name, POST->name) > 0)
-		{
-			datatmp = tmp->content;
-			i = tmp->content_size;
-			tmp->content = post->content;
-			tmp->content_size = post->content_size;
-			post->content = datatmp;
-			post->content_size = i;
-			tmp = *data;
-		}
-		else
-			tmp = post;
-	}
-}
-
-static void		ft_lstime(t_list **data)
-{
-	void		*datatmp;
-	t_list		*tmp;
-	t_list		*post;
-	size_t		i;
-
-	tmp = *data;
-	while ((post = tmp->next) != NULL && tmp != NULL)
-	{
-		if (TMP->date < POST->date || \
-			(POST->date == TMP->date && ft_strcmp(TMP->name, POST->name) > 0))
+		if (ALPHASORT || TIMESORT || SIZESORT)
 		{
 			datatmp = tmp->content;
 			i = tmp->content_size;
@@ -99,11 +78,13 @@ static void		ft_lstreverse(t_list **data)
 	*data = start;
 }
 
-void			ft_lssortdata(int reverse, int sortbytime, t_list **data)
+void			ft_lssortdata(int *option, t_list **data)
 {
-	ft_lstalpha(data);
-	if (sortbytime)
-		ft_lstime(data);
-	if (reverse)
+	ft_ls_sort(data, 0);
+	if (option[6])
+		ft_ls_sort(data, 2);
+	else if (option[4])
+		ft_ls_sort(data, 1);
+	if (option[3])
 		ft_lstreverse(data);
 }

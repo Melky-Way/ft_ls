@@ -33,6 +33,7 @@ SRC += ft_lssortdata.c
 SRC += ft_printspaces.c
 SRC += ft_lsgetname.c
 SRC += main.c
+SRC += ft_lsnewtfile.c
 
 CFILES = $(patsubst %,$(CPATH)/%,$(SRC))
 OFILES = $(patsubst %.c,%.o,$(CFILES))

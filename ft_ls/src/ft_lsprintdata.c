@@ -6,7 +6,7 @@
 /*   By: msoudan <msoudan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/28 17:16:29 by msoudan           #+#    #+#             */
-/*   Updated: 2016/01/28 21:26:20 by msoudan          ###   ########.fr       */
+/*   Updated: 2016/02/02 21:56:02 by msoudan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ static void		ft_lsprintdate(time_t date)
 	ft_putchar(' ');
 }
 
-static void		ft_lsprintlong(t_list **data, int dir)
+static void		ft_lsprintlong(int *option, t_list **data, int dir)
 {
 	t_list		*tmp;
 	int			array[4] = {0, 0, 0, 0};
@@ -100,32 +100,40 @@ static void		ft_lsprintlong(t_list **data, int dir)
 	{
 		ft_putchar(TMP->type);
 		ft_putstr(TMP->access);
-		ft_printspaces(2 + (array[0] - ft_lsgetsize(TMP->links)));
+		ft_printspaces(1 + (array[0] - ft_lsgetsize(TMP->links)));
 		ft_putnbr(TMP->links);
-		ft_printspaces(1 + (array[1] - ft_strlen(TMP->owner)));
+		ft_putstr(" ");
 		ft_putstr(TMP->owner);
-		ft_printspaces(2 + (array[2] - ft_strlen(TMP->group)));
+		ft_printspaces(array[1] - ft_strlen(TMP->owner));
+		ft_putstr("  ");
 		ft_putstr(TMP->group);
+		ft_printspaces(array[2] - ft_strlen(TMP->group));
 		ft_printspaces(2 + (array[3] - ft_lsgetsize(TMP->size)));
 		ft_putnbr(TMP->size);
 		ft_lsprintdate(TMP->date);
-		ft_putendl(TMP->name);
+		ft_putstr(TMP->name);
+		if (option[8] && TMP->type == 'd')
+			ft_putchar('/');
+		ft_putchar('\n');
 		tmp = tmp->next;
 	}
 }
 
-void			ft_lsprintdata(int longformat, t_list **data, int dir)
+void			ft_lsprintdata(int *option, t_list **data, int dir)
 {
 	t_list		*tmp;
 
 	tmp = *data;
-	if (longformat == 108)
-		ft_lsprintlong(&tmp, dir);
+	if (option[2] == 108)
+		ft_lsprintlong(option, &tmp, dir);
 	else
 	{
 		while (tmp != NULL)
 		{
-			ft_putendl(TMP->name);
+			ft_putstr(TMP->name);
+			if (option[8] && TMP->type == 'd')
+				ft_putchar('/');
+			ft_putchar('\n');
 			tmp = tmp->next;
 		}
 	}

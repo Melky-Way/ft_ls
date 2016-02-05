@@ -6,11 +6,12 @@
 /*   By: msoudan <msoudan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/18 13:54:27 by msoudan           #+#    #+#             */
-/*   Updated: 2016/01/28 21:38:06 by msoudan          ###   ########.fr       */
+/*   Updated: 2016/02/02 22:14:37 by msoudan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+#define TMP tmp->content
 
 static void		print_dir(int *print, char *content)
 {
@@ -28,25 +29,21 @@ static void		print_dir(int *print, char *content)
 	}
 }
 
-static void		ft_split_list(t_list **dir, t_list **file)
+static void		ft_split_list(int *opt, t_list **dir, t_list **file)
 {
 	struct stat	sb;
 	t_list		*tmp;
-	t_list		*del;
 	t_list		*prev;
 
 	tmp = *dir;
+	prev = NULL;
 	while (tmp != NULL)
 	{
-		if (stat((char *)tmp->content, &sb) == 0 && !S_ISDIR(sb.st_mode))
+		if (opt[7] || (!lstat((char *)TMP, &sb) && !S_ISDIR(sb.st_mode)))
 		{
-			ft_lstpushback(file, tmp->content, tmp->content_size);
-			if ((del = tmp) == *dir)
-				*dir = (*dir)->next;
-			tmp = tmp->next;
-			if (prev != NULL)
-				prev->next = tmp;
-			free(del);
+			ft_lstpushback(file, TMP, tmp->content_size);
+			TMP = NULL;
+			delete_elem(dir, &tmp, &prev);
 		}
 		else
 		{
@@ -63,7 +60,7 @@ static void		ft_ls_file(int *option, t_list **directory)
 	t_list		*elem;
 
 	file = NULL;
-	ft_split_list(directory, &file);
+	ft_split_list(option, directory, &file);
 	if (file == NULL)
 		return ;
 	elem = file;
@@ -73,8 +70,8 @@ static void		ft_ls_file(int *option, t_list **directory)
 		ft_lsgetdata(option, (char *)elem->content, &data);
 		elem = elem->next;
 	}
-	ft_lssortdata(option[3], option[4], &data);
-	ft_lsprintdata(option[2], &data, 0);
+	ft_lssortdata(option, &data);
+	ft_lsprintdata(option, &data, 0);
 	ft_lsclearlist(&data);
 	ft_lstclear(&file);
 	if (*directory != NULL)
@@ -94,9 +91,9 @@ void			ft_ls(int print, int *option, t_list **directory)
 		print_dir(&print, (char *)elem->content);
 		if (ft_lsgetdata(option, (char *)elem->content, &data) != -1)
 		{
-			ft_lssortdata(option[3], option[4], &data);
-			ft_lsprintdata(option[2], &data, 1);
-			if (option[0])
+			ft_lssortdata(option, &data);
+			ft_lsprintdata(option, &data, 1);
+			if (option[0] && !option[7])
 				ft_lsrecursive(++print, option, (char *)elem->content, &data);
 			else if (*directory != NULL)
 				ft_lsclearlist(&data);

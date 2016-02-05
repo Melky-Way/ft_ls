@@ -6,13 +6,14 @@
 /*   By: msoudan <msoudan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/12/01 10:49:30 by msoudan           #+#    #+#             */
-/*   Updated: 2016/01/28 21:39:43 by msoudan          ###   ########.fr       */
+/*   Updated: 2016/02/03 11:58:03 by msoudan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_LS_H
 # define FT_LS_H
 # include "../libft/libft.h"
+# include "ft_colors.h"
 
 /*
 ** write readlink exit
@@ -61,6 +62,10 @@
 */
 # include <string.h>
 
+/*
+** errno
+*/
+# include <errno.h>
 
 typedef struct		s_file
 {
@@ -80,14 +85,17 @@ char				*groupNameFromId(gid_t gid);
 char				*ft_lscreatepath(char *str1, char *str2);
 void				ft_printspaces(int n);
 int					ft_lsgetdata(int *option, char *directory, t_list **data);
-void				ft_lssortdata(int reverse, int sortbytime, t_list **data);
-void				ft_lsprintdata(int longformat, t_list **data, int dir);
+void				ft_lssortdata(int *option, t_list **data);
+void				ft_lsprintdata(int *option, t_list **data, int dir);
 void				ft_ls(int print, int *option, t_list **directory);
 void				ft_lsrecursive(int pr, int *op, char *old, t_list **data);
 void				ft_lsclearlist(t_list **data);
 int					ft_lsblkcnt(t_list *data);
+void				delete_elem(t_list **dir, t_list **tmp, t_list **prev);
+int					ft_lserrorlist(t_list **dir);
 int					ft_lserror(char *name);
 char				*ft_lsgetname(int lf, char type, char *path, char *name);
+t_file				*ft_lsnewtfile(int *option, char *path, char *name);
 int					main(int argc, char **argv);
 
 #endif

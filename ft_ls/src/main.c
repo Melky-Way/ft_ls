@@ -6,11 +6,12 @@
 /*   By: msoudan <msoudan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/19 23:45:58 by msoudan           #+#    #+#             */
-/*   Updated: 2016/01/28 21:38:53 by msoudan          ###   ########.fr       */
+/*   Updated: 2016/02/02 22:27:18 by msoudan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+#define ARG argv[i][j]
 
 static void		sort_directories(t_list **dir)
 {
@@ -48,6 +49,7 @@ static t_list	*ft_getdirectories(char **argv)
 		if ((cpy = ft_strdup(argv[i])) == NULL)
 		{
 			ft_lstclear(&dir);
+			dir = NULL;
 			return (NULL);
 		}
 		ft_lstpushback(&dir, cpy, ft_strlen(argv[i] + 1));
@@ -72,9 +74,10 @@ static int		ft_printerror_option(char error)
 ** About the int array named "option" :
 ** 0 = R ;
 ** 1 = a ;
-** 2 = l ;
+** 2 = l or 1 ;
 ** 3 = r ;
 ** 4 = t ;
+** 5 = u or U ;
 */
 
 static int		ft_getoptions(int *option, char **argv)
@@ -85,7 +88,7 @@ static int		ft_getoptions(int *option, char **argv)
 	char		*list;
 
 	i = 0;
-	list = "Ralrt";
+	list = "RalrtuSdp";
 	while (argv[++i] != 0 && argv[i][0] == '-' && ft_strcmp(argv[i], "-"))
 	{
 		j = 0;
@@ -93,12 +96,16 @@ static int		ft_getoptions(int *option, char **argv)
 			return (i + 1);
 		while (argv[i][++j] != 0)
 		{
-			if ((found = ft_strchr(list, argv[i][j])) != NULL)
-				option[found - list] = (int)argv[i][j];
-			else if (argv[i][j] == '1')
+			if ((found = ft_strchr(list, ARG)) != NULL)
+				option[found - list] = (int)ARG;
+			else if (ARG == '1')
 				option[2] = 0;
+			else if (ARG == 'U')
+				option[5] = (int)'U';
+			else if (ARG == 'c')
+				option[5] = (int)'c';
 			else
-				return (ft_printerror_option(argv[i][j]));
+				return (ft_printerror_option(ARG));
 		}
 	}
 	return (i);
@@ -106,7 +113,7 @@ static int		ft_getoptions(int *option, char **argv)
 
 int				main(int argc, char **argv)
 {
-	int			option[5] = {0};
+	int			option[9] = {0};
 	t_list		*directory;
 	int			print;
 	int			i;
@@ -121,6 +128,7 @@ int				main(int argc, char **argv)
 	else
 	{
 		print = (ft_lstsize(directory) > 1) ? 1 : 0;
+		ft_lserrorlist(&directory);
 		ft_ls(print, option, &directory);
 	}
 	return (0);
