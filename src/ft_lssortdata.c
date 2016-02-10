@@ -78,6 +78,49 @@ static void		ft_lstreverse(t_list **data)
 	*data = start;
 }
 
+static int		ft_sortalpha(t_list *a, t_list *b)
+{
+	t_file		*tmp1;
+	t_file		*tmp2;
+
+	if (a != NULL && b != NULL)
+	{
+		tmp1 = (t_file *)a->content;
+		tmp2 = (t_file *)b->content;
+		return ((ft_strcmp(tmp1->name, tmp2->name) > 0));
+	}
+	return (0);
+}
+
+static int		ft_sorttime(t_list *a, t_list *b)
+{
+	t_file		*tmp1;
+	t_file		*tmp2;
+
+	if (a != NULL && b != NULL)
+	{
+		tmp1 = (t_file *)a->content;
+		tmp2 = (t_file *)b->content;
+		return ((tmp1->date < tmp2->date || (tmp2->date == tmp1->date && \
+				ft_strcmp(tmp1->name, tmp2->name) > 0)));
+	}
+	return (0);
+}
+
+static int		ft_sortsize(t_list *a, t_list *b)
+{
+	t_file		*tmp1;
+	t_file		*tmp2;
+
+	if (a != NULL && b != NULL)
+	{
+		tmp1 = (t_file *)a->content;
+		tmp2 = (t_file *)b->content;
+		return ((tmp1->size < tmp2->size));
+	}
+	return (0);
+}
+
 void			ft_lssortdata(int *option, t_list **data)
 {
 	if (option[9])
