@@ -34,6 +34,7 @@ SRC += ft_printspaces.c
 SRC += ft_lsgetname.c
 SRC += main.c
 SRC += ft_lsnewtfile.c
+SRC += ft_lstmergesort.c
 
 CFILES = $(patsubst %,$(CPATH)/%,$(SRC))
 OFILES = $(patsubst %.c,%.o,$(CFILES))

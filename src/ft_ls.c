@@ -13,6 +13,15 @@
 #include "ft_ls.h"
 #define TMP tmp->content
 
+static int		link_or_dir(char *content)
+{
+	struct stat	sb;
+
+	if (lstat(content, &sb) == 0 && S_ISLNK(sb.st_mode))
+		return (0);
+	return (1);
+}
+
 static void		print_dir(int *print, char *content)
 {
 	struct stat	sb;
@@ -39,7 +48,7 @@ static void		ft_split_list(int *opt, t_list **dir, t_list **file)
 	prev = NULL;
 	while (tmp != NULL)
 	{
-		if (opt[7] || (!lstat((char *)TMP, &sb) && !S_ISDIR(sb.st_mode)))
+		if (opt[7] || (!stat((char *)TMP, &sb) && !S_ISDIR(sb.st_mode)))
 		{
 			ft_lstpushback(file, TMP, tmp->content_size);
 			TMP = NULL;
@@ -92,7 +101,7 @@ void			ft_ls(int print, int *option, t_list **directory)
 		if (ft_lsgetdata(option, (char *)elem->content, &data) != -1)
 		{
 			ft_lssortdata(option, &data);
-			ft_lsprintdata(option, &data, 1);
+			ft_lsprintdata(option, &data, link_or_dir((char *)elem->content));
 			if (option[0] && !option[7])
 				ft_lsrecursive(++print, option, (char *)elem->content, &data);
 			else if (*directory != NULL)

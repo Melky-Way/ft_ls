@@ -29,15 +29,12 @@ static int			ft_lsgetdatadir(int *option, char *dir, t_list **data)
 	struct dirent	*tmpdata;
 	t_file			*tmpcontent;
 	char			*path;
-	//int i = 0;
 
 	if ((fd = opendir(dir)) == NULL || (tmpdata = readdir(fd)) == NULL)
 		return (ft_lserror(dir));
 	while (tmpdata != NULL)
 	{
-		/*if (i++ > 15000)
-			printf("%i.\n", i);
-		if ((!option[1] && tmpdata->d_name[0] != '.') || option[1])*/
+		/*if ((!option[1] && tmpdata->d_name[0] != '.') || option[1])*/
 		if (ls_visibilityoptions(tmpdata->d_name, option[1]))
 		{
 			path = ft_lscreatepath(dir, tmpdata->d_name);

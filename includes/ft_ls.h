@@ -80,6 +80,8 @@ typedef struct		s_file
 	time_t			date;
 }					t_file;
 
+t_list				*ft_lstmergesort(t_list *a, int n \
+					(*f)(t_list *a, t_list *b));
 char				*userNameFromId(uid_t uid);
 char				*groupNameFromId(gid_t gid);
 char				*ft_lscreatepath(char *str1, char *str2);
