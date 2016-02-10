@@ -41,7 +41,7 @@ void		ft_lsrecursive(int print, int *op, char *old, t_list **data)
 	{
 		if (((t_file *)tmp->content)->type == 'd' && NOT_CURRENT_NOR_PARENT)
 		{
-			name = ft_lscreatepath(old, ((t_file *)tmp->content)->name);
+			name = ft_lscreatepath(old, NAME);
 			ft_lstpushback(&dir, ft_strdup(name), ft_strlen(name));
 			free(name);
 		}

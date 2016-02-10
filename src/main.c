@@ -40,19 +40,21 @@ static t_list	*ft_getdirectories(char **argv)
 	char		*cpy;
 
 	i = 0;
-	cpy = (argv[i] != NULL) ? argv[i] : ".";
-	dir = ft_lstnew(cpy, (ft_strlen(cpy) + 1));
 	if (argv[i] == NULL)
-		return (dir);
-	while (argv[++i] != NULL)
+		return ((dir = ft_lstnew(ft_strdup("."), 2)));
+	dir = NULL;
+	while (argv[i] != NULL)
 	{
-		if ((cpy = ft_strdup(argv[i])) == NULL)
+		if (!ft_strcmp(argv[i], "") || (cpy = ft_strdup(argv[i])) == NULL)
 		{
+			if (!ft_strcmp(argv[i], ""))
+				ft_putendl_fd("ls: fts_open: No such file or directory", STDERR_FILENO);
 			ft_lstclear(&dir);
 			dir = NULL;
 			return (NULL);
 		}
 		ft_lstpushback(&dir, cpy, ft_strlen(argv[i] + 1));
+		i++;
 	}
 	sort_directories(&dir);
 	return (dir);
@@ -88,7 +90,7 @@ static int		ft_getoptions(int *option, char **argv)
 	char		*list;
 
 	i = 0;
-	list = "RalrtuSdp";
+	list = "RalrtuSdpf";
 	while (argv[++i] != 0 && argv[i][0] == '-' && ft_strcmp(argv[i], "-"))
 	{
 		j = 0;
@@ -100,20 +102,21 @@ static int		ft_getoptions(int *option, char **argv)
 				option[found - list] = (int)ARG;
 			else if (ARG == '1')
 				option[2] = 0;
-			else if (ARG == 'U')
-				option[5] = (int)'U';
-			else if (ARG == 'c')
-				option[5] = (int)'c';
+			else if (ARG == 'U'|| ARG == 'c')
+				option[5] = (int)ARG;
+			else if (ARG == 'A')
+				option[1] = !option[1] ? (int)ARG : option[1];
 			else
 				return (ft_printerror_option(ARG));
 		}
+		option[1] = option[9] ? (int)'a' : option[1];
 	}
 	return (i);
 }
 
 int				main(int argc, char **argv)
 {
-	int			option[9] = {0};
+	int			option[10] = {0};
 	t_list		*directory;
 	int			print;
 	int			i;
@@ -128,8 +131,8 @@ int				main(int argc, char **argv)
 	else
 	{
 		print = (ft_lstsize(directory) > 1) ? 1 : 0;
-		ft_lserrorlist(&directory);
-		ft_ls(print, option, &directory);
+		if (ft_lserrorlist(&directory) != -1)
+			ft_ls(print, option, &directory);
 	}
 	return (0);
 }

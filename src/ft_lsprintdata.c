@@ -18,44 +18,30 @@
 
 static int		ft_lsgetsize(int n)
 {
+	int i;
+
+	i = 1;
 	if (n < 0)
 		n = (n == MININT) ? MAXINT : -n;
-	if (n < 10)
-		return (1);
-	else if (n < 100)
-		return (2);
-	else if (n < 1000)
-		return (3);
-	else if (n < 10000)
-		return (4);
-	else if (n < 100000)
-		return (5);
-	else if (n < 1000000)
-		return (6);
-	else if (n < 10000000)
-		return (7);
-	else if (n < 100000000)
-		return (8);
-	else if (n < 1000000000)
-		return (9);
-	return (10);
+	while (n >= ft_power(10, i))
+		i++;
+	return (i);
 }
 
 static void		ft_lsgetspaces(int *array, t_list **data)
 {
 	t_list		*tmp;
+	int			i;
 
 	tmp = (t_list *)*data;
 	while (tmp != NULL)
 	{
-		if (array[0] < TMP->links)
-			array[0] = TMP->links;
-		if (array[1] < (int)ft_strlen(TMP->owner))
-			array[1] = (int)ft_strlen(TMP->owner);
-		if (array[2] < (int)ft_strlen(TMP->group))
-			array[2] = (int)ft_strlen(TMP->group);
-		if (array[3] < TMP->size)
-			array[3] = TMP->size;
+		array[0] = array[0] < TMP->links ? TMP->links : array[0];
+		i = (int)ft_strlen(TMP->owner);
+		array[1] = array[1] < i ? i : array[1];
+		i = (int)ft_strlen(TMP->group);
+		array[2] = array[2] < i ? i : array[2];
+		array[3] = array[3] < TMP->size ? TMP->size : array[3];
 		tmp = tmp->next;
 	}
 	array[0] = ft_lsgetsize(array[0]);

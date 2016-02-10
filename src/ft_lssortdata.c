@@ -80,6 +80,8 @@ static void		ft_lstreverse(t_list **data)
 
 void			ft_lssortdata(int *option, t_list **data)
 {
+	if (option[9])
+		return ;
 	ft_ls_sort(data, 0);
 	if (option[6])
 		ft_ls_sort(data, 2);
