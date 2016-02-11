@@ -29,6 +29,8 @@ static char		ft_lsidentifytype(mode_t st_mode)
 		return ('b');
 	else if (S_ISLNK(st_mode))
 		return ('l');
+	else if (S_ISWHT(st_mode))
+		return ('w');
 	else
 		return ('-');
 }
@@ -118,12 +120,13 @@ t_file			*ft_lsnewtfile(int *option, char *path, char *name)
 	if ((elem = (t_file *)malloc(sizeof(*elem))) == NULL)
 		return (NULL);
 	elem->type = ft_lsidentifytype(buf.st_mode);
-	elem->name = ft_lsgetname(option[2], elem->type, path, name);
+	elem->name = name == NULL ? ft_strdup(path) : ft_strdup(name);
+	elem->lnk = (elem->type == 'l' && option[2]) ? ft_lsgetlnk(path) : NULL;
 	elem->access = ft_lsidentifyaccess(path, buf.st_mode);
 	elem->blkcnt = buf.st_blocks;
 	elem->links = buf.st_nlink;
-	elem->owner = ft_strdup(userNameFromId(buf.st_uid));
-	elem->group = ft_strdup(groupNameFromId(buf.st_gid));
+	elem->owner = option[11] ? NULL : ft_strdup(userNameFromId(buf.st_uid));
+	elem->group = option[10] ? NULL : ft_strdup(groupNameFromId(buf.st_gid));
 	elem->size = buf.st_size;
 	if (option[5] == 'U' || option[5] == 'u')
 		elem->date = option[5] == 'U' ? buf.st_birthtime : buf.st_atime;

@@ -70,6 +70,7 @@
 typedef struct		s_file
 {
 	char			*name;
+	char			*lnk;
 	char			type;
 	char			*access;
 	int				links;
@@ -96,7 +97,7 @@ int					ft_lsblkcnt(t_list *data);
 void				delete_elem(t_list **dir, t_list **tmp, t_list **prev);
 int					ft_lserrorlist(t_list **dir);
 int					ft_lserror(char *name);
-char				*ft_lsgetname(int lf, char type, char *path, char *name);
+char				*ft_lsgetlnk(char *path);
 t_file				*ft_lsnewtfile(int *option, char *path, char *name);
 int					main(int argc, char **argv);
 

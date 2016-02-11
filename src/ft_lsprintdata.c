@@ -71,6 +71,26 @@ static void		ft_lsprintdate(time_t date)
 	ft_putchar(' ');
 }
 
+static void		ft_lsnameoptions(int option, char type, char *acc)
+{
+	if (option && type == 'd')
+		ft_putchar('/');
+	if (option == 'F')
+	{
+		if (type == 'p')
+			ft_putchar('|');
+		if (type == 'l')
+			ft_putchar('@');
+		if (type == 's')
+			ft_putchar('=');
+		if (type == 'w')
+			ft_putchar('%');
+		else if (type == '-' && acc != NULL && \
+			(acc[2] == 'x' || acc[5] == 'x' || acc[8] == 'x'))
+			ft_putchar('*');
+	}
+}
+
 static void		ft_lsprintlong(int *option, t_list **data, int dir)
 {
 	t_list		*tmp;
@@ -98,8 +118,8 @@ static void		ft_lsprintlong(int *option, t_list **data, int dir)
 		ft_putnbr(TMP->size);
 		ft_lsprintdate(TMP->date);
 		ft_putstr(TMP->name);
-		if (option[8] && TMP->type == 'd')
-			ft_putchar('/');
+		ft_lsnameoptions(option[8], TMP->type, TMP->access);
+		ft_putstr(TMP->lnk);
 		ft_putchar('\n');
 		tmp = tmp->next;
 	}
@@ -110,15 +130,14 @@ void			ft_lsprintdata(int *option, t_list **data, int dir)
 	t_list		*tmp;
 
 	tmp = *data;
-	if (option[2] == 108)
+	if (option[2] || option[10] || option[11])
 		ft_lsprintlong(option, &tmp, dir);
 	else
 	{
 		while (tmp != NULL)
 		{
 			ft_putstr(TMP->name);
-			if (option[8] && TMP->type == 'd')
-				ft_putchar('/');
+			ft_lsnameoptions(option[8], TMP->type, TMP->access);
 			ft_putchar('\n');
 			tmp = tmp->next;
 		}

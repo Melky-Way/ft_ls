@@ -18,6 +18,8 @@ static void		ft_lsclearcontent(t_file *content)
 	{
 		if (content->access != NULL)
 			free(content->access);
+		if (content->lnk != NULL)
+			free(content->lnk);
 		if (content->owner != NULL)
 			free(content->owner);
 		if (content->group != NULL)
