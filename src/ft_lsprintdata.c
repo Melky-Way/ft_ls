@@ -48,16 +48,22 @@ static void		ft_lsgetspaces(int *array, t_list **data)
 	array[3] = ft_lsgetsize(array[3]);
 }
 
-static void		ft_lsprintdate(time_t date)
+static void		ft_lsprintdate(time_t date, int mode)
 {
 	int			i;
 	char		*str;
 	time_t		now;
 
-	i = 3;
+	i = mode ? 3 : 2;
 	str = ctime(&date);
 	now = time(NULL);
-	ft_putchar(' ');
+	if (mode)
+	{
+		while (str[i] && str[i] != '\n')
+			ft_putchar(str[i++]);
+		ft_putchar(' ');
+		return ;
+	}
 	while (str[i++] && i != 16 && str[i] != '\n')
 	{
 		if (i == 11 && ((now - date) >= 15768000 || date > now))
@@ -110,13 +116,14 @@ static void		ft_lsprintlong(int *option, t_list **data, int dir)
 		ft_putnbr(TMP->links);
 		ft_putstr(" ");
 		ft_putstr(TMP->owner);
-		ft_printspaces(array[1] - ft_strlen(TMP->owner));
-		ft_putstr("  ");
+		if (!option[11])
+			ft_printspaces(2 + array[1] - ft_strlen(TMP->owner));
 		ft_putstr(TMP->group);
-		ft_printspaces(array[2] - ft_strlen(TMP->group));
-		ft_printspaces(2 + (array[3] - ft_lsgetsize(TMP->size)));
+		if (!option[10])
+			ft_printspaces(2 + array[2] - ft_strlen(TMP->group));
+		ft_printspaces((array[3] - ft_lsgetsize(TMP->size)));
 		ft_putnbr(TMP->size);
-		ft_lsprintdate(TMP->date);
+		ft_lsprintdate(TMP->date, option[12]);
 		ft_putstr(TMP->name);
 		ft_lsnameoptions(option[8], TMP->type, TMP->access);
 		ft_putstr(TMP->lnk);

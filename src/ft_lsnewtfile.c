@@ -12,6 +12,7 @@
 
 #include "ft_ls.h"
 
+#define IS_LONG (option[2] || option[10] || option[11])
 #define NO_USRX (access[2] == '-' || access[2] == 'S')
 #define NO_GRPX (access[5] == 'S' || access[5] == '-')
 
@@ -121,7 +122,7 @@ t_file			*ft_lsnewtfile(int *option, char *path, char *name)
 		return (NULL);
 	elem->type = ft_lsidentifytype(buf.st_mode);
 	elem->name = name == NULL ? ft_strdup(path) : ft_strdup(name);
-	elem->lnk = (elem->type == 'l' && option[2]) ? ft_lsgetlnk(path) : NULL;
+	elem->lnk = (elem->type == 'l' && IS_LONG) ? ft_lsgetlnk(path) : NULL;
 	elem->access = ft_lsidentifyaccess(path, buf.st_mode);
 	elem->blkcnt = buf.st_blocks;
 	elem->links = buf.st_nlink;

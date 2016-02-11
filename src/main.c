@@ -90,7 +90,7 @@ static int		ft_getoptions(int *option, char **argv)
 	char		*list;
 
 	i = 0;
-	list = "RalrtuSdpfog";
+	list = "RalrtuSdpfogT";
 	while (argv[++i] != 0 && argv[i][0] == '-' && ft_strcmp(argv[i], "-"))
 	{
 		j = 0;
@@ -101,7 +101,11 @@ static int		ft_getoptions(int *option, char **argv)
 			if ((found = ft_strchr(list, ARG)) != NULL)
 				option[found - list] = (int)ARG;
 			else if (ARG == '1')
+			{
 				option[2] = 0;
+				option[10] = 0;
+				option[11] = 0;
+			}
 			else if (ARG == 'U'|| ARG == 'c')
 				option[5] = (int)ARG;
 			else if (ARG == 'F')
@@ -118,7 +122,7 @@ static int		ft_getoptions(int *option, char **argv)
 
 int				main(int argc, char **argv)
 {
-	int			option[12] = {0};
+	int			option[13] = {0};
 	t_list		*directory;
 	int			print;
 	int			i;
