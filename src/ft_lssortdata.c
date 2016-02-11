@@ -20,7 +20,7 @@
 			(POST->date == TMP->date && ft_strcmp(TMP->name, POST->name) > 0)))
 #define SIZESORT (mode == 2 && TMP->size < POST->size)
 
-static void		ft_ls_sort(t_list **data, int mode)
+/*static void		ft_ls_sort(t_list **data, int mode)
 {
 	void		*datatmp;
 	t_list		*tmp;
@@ -43,39 +43,21 @@ static void		ft_ls_sort(t_list **data, int mode)
 		else
 			tmp = post;
 	}
-}
+}*/
 
-static void		ft_run_list(t_list **prev, t_list **tmp)
-{
-	while (*tmp != NULL && (*tmp)->next != NULL)
-	{
-		*prev = *tmp;
-		*tmp = (*tmp)->next;
-	}
-}
-
-static void		ft_lstreverse(t_list **data)
+static t_list	*ft_lstreverse(t_list *data, t_list *next)
 {
 	t_list		*tmp;
-	t_list		*prev;
-	t_list		*reverse;
-	t_list		*start;
 
-	tmp = *data;
-	prev = NULL;
-	ft_run_list(&prev, &tmp);
-	start = tmp;
-	prev->next = NULL;
-	reverse = start;
-	while (tmp != *data)
-	{
-		tmp = *data;
-		ft_run_list(&prev, &tmp);
-		prev->next = NULL;
-		reverse->next = tmp;
-		reverse = reverse->next;
-	}
-	*data = start;
+	if (next == NULL)
+		return (data);
+	tmp = next->next;
+	next->next = data;
+	if ((void *)data->next == (void *)next)
+		data->next = NULL;
+	if (tmp != NULL)
+		return (ft_lstreverse(next, tmp));
+	return (next);
 }
 
 static int		ft_sortalpha(t_list *a, t_list *b)
@@ -89,6 +71,8 @@ static int		ft_sortalpha(t_list *a, t_list *b)
 		tmp2 = (t_file *)b->content;
 		return ((ft_strcmp(tmp1->name, tmp2->name) > 0));
 	}
+	if (a == NULL && b)
+		return (1);
 	return (0);
 }
 
@@ -104,6 +88,8 @@ static int		ft_sorttime(t_list *a, t_list *b)
 		return ((tmp1->date < tmp2->date || (tmp2->date == tmp1->date && \
 				ft_strcmp(tmp1->name, tmp2->name) > 0)));
 	}
+	if (a == NULL && b)
+		return (1);
 	return (0);
 }
 
@@ -118,18 +104,26 @@ static int		ft_sortsize(t_list *a, t_list *b)
 		tmp2 = (t_file *)b->content;
 		return ((tmp1->size < tmp2->size));
 	}
+	if (a == NULL && b)
+		return (1);
 	return (0);
 }
 
 void			ft_lssortdata(int *option, t_list **data)
 {
+	int			len;
+
+	len = *data == NULL ? 0 : ft_lstsize((*data));
 	if (option[9])
 		return ;
-	ft_ls_sort(data, 0);
+	*data = ft_lstmergesort(*data, len, &ft_sortalpha);
+//	ft_ls_sort(data, 0);
 	if (option[6])
-		ft_ls_sort(data, 2);
+		*data = ft_lstmergesort(*data, len, &ft_sortsize);
+//		ft_ls_sort(data, 2);
 	else if (option[4])
-		ft_ls_sort(data, 1);
-	if (option[3])
-		ft_lstreverse(data);
+		*data = ft_lstmergesort(*data, len, &ft_sorttime);
+//		ft_ls_sort(data, 1);
+	if (option[3] && *data != NULL)
+		*data = ft_lstreverse(*data, (*data)->next);
 }

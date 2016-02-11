@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_ls.h"
 
 /*t_list		*ft_lstaddsort(t_list *lst, t_list new, \
 			int (*f)(void *cnt1, void *cnt2))
@@ -49,7 +49,7 @@ static t_list	*lstsplit(t_list *a, int len)
 	i = 1;
 	if ((tmp = a) != NULL)
 	{
-		while (i++ < len && tmp != NULL)
+		while (i++ <= len && tmp != NULL)
 		{
 			prev = tmp;
 			tmp = tmp->next;
@@ -60,7 +60,7 @@ static t_list	*lstsplit(t_list *a, int len)
 	return (tmp);
 }
 
-static t_list	*mergesort(t_list *a, t_list *b, \
+static t_list	*ft_mergesort(t_list *a, t_list *b, \
 				int (*f)(t_list *lst1, t_list *lst2))
 {
 	t_list		*ret;
@@ -87,24 +87,25 @@ static t_list	*mergesort(t_list *a, t_list *b, \
 	return (ret);
 }
 
-t_list			*ft_lstmergesort(t_list *a, int n \
-				(*f)(t_list *a, t_list *b))
+t_list			*ft_lstmergesort(t_list *a, int n, \
+				int (*f)(t_list *a, t_list *b))
 {
 	t_list		*b;
 
+	b = NULL;
 	if (n > 2)
 	{
-		b = lstsplit(a, n / 2, (*f));
-		b = ft_lstmergesort(b, n / 2, (*f));
-		a = ft_lstmergesort(a, n / 2, (*f));
-		return (mergesort(a, b, (*f)));
+		b = lstsplit(a, n / 2);
+		b = ft_lstmergesort(b, (n + 1) / 2, (*f));
+		a = ft_lstmergesort(a, (n + 1) / 2, (*f));
+		return (ft_mergesort(a, b, (*f)));
 	}
-	if (a->next != NULL && (*f)(a->content, a->next->content))
+	if (a->next != NULL && (*f)(a, a->next))
 	{
-		b = a;
-		a = a->next;
-		a->next = b;
-		b->next = NULL;
+		b = a->next;
+		b->next = a;
+		a->next = NULL;
+		return (b);
 	}
-	return (b);
+	return (a);
 }
