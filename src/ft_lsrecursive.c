@@ -15,7 +15,7 @@
 #define NAME ((t_file *)tmp->content)->name
 #define NOT_CURRENT_NOR_PARENT (ft_strcmp(NAME, ".") && ft_strcmp(NAME, ".."))
 
-char	*ft_lscreatepath(char *str1, char *str2)
+char		*ft_lscreatepath(char *str1, char *str2)
 {
 	char	*ret;
 

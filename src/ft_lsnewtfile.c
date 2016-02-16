@@ -15,6 +15,7 @@
 #define IS_LONG (option[2] || option[10] || option[11])
 #define NO_USRX (access[2] == '-' || access[2] == 'S')
 #define NO_GRPX (access[5] == 'S' || access[5] == '-')
+#define XATTR_SIZE 10000
 
 static char		ft_lsidentifytype(mode_t st_mode)
 {
@@ -35,43 +36,6 @@ static char		ft_lsidentifytype(mode_t st_mode)
 	else
 		return ('-');
 }
-#include <stdio.h>
-#include <sys/xattr.h>
-#define XATTR_SIZE 10000
-
-/*static int			letsprintsomefucks(char *str)
-{
-	char list[XATTR_SIZE], value[XATTR_SIZE];
-	ssize_t listLen, valueLen;
-	int ns;
-
-	if (str)
-	{
-		ft_putendl(str);
-		listLen = listxattr(str, list, XATTR_SIZE, XATTR_NOFOLLOW);
-		if (listLen == -1)
-		{
-			perror(str);
-			return (-1);
-		}
-		printf("%s: (listLen is %zu)\n", str, listLen);
-
-		// Loop through all EA names, displaying name + value
-
-		for (ns = 0; ns < listLen; ns += strlen(&list[ns]) + 1)
-		{
-			printf("name=%s; ", &list[ns]);
-			valueLen = getxattr(str, &list[ns], value, XATTR_SIZE, 0, XATTR_NOFOLLOW);
-			if (valueLen == -1)
-				printf("couldn't get value");
-			else
-				printf("value=%.*s", (int) valueLen, value);
-			printf("\n");
-		}
-		printf("Voila.\n");
-	}
-	return (0);
-}*/
 
 static char		ft_lsxattr(char *path)
 {
@@ -92,19 +56,19 @@ static char		*ft_lsidentifyaccess(char *path, mode_t st_mode)
 	type = ft_dec_to_oct(st_mode & S_IRWXU) / 100;
 	access[0] = (type >= 4) ? 'r' : '-';
 	access[1] = (type > 1 && type != 4 && type != 5) ? 'w' : '-';
-	access[2] = (type%2 != 0) ? 'x' : '-';
+	access[2] = (type % 2 != 0) ? 'x' : '-';
 	if (st_mode & S_ISUID)
 		access[2] = access[2] == 'x' ? 's' : 'S';
 	type = ft_dec_to_oct(st_mode & S_IRWXG) / 10;
 	access[3] = (type >= 4) ? 'r' : '-';
 	access[4] = (type > 1 && type != 4 && type != 5) ? 'w' : '-';
-	access[5] = (type%2 != 0) ? 'x' : '-';
+	access[5] = (type % 2 != 0) ? 'x' : '-';
 	if (st_mode & S_ISGID)
 		access[5] = access[5] == 'x' ? 's' : 'S';
 	type = ft_dec_to_oct(st_mode & S_IRWXO);
 	access[6] = (type >= 4) ? 'r' : '-';
 	access[7] = (type > 1 && type != 4 && type != 5) ? 'w' : '-';
-	access[8] = (type%2 != 0) ? 'x' : '-';
+	access[8] = (type % 2 != 0) ? 'x' : '-';
 	if (st_mode & S_ISVTX)
 		access[8] = (NO_USRX && NO_GRPX) ? 'T' : 't';
 	access[9] = ft_lsxattr(path);
@@ -123,7 +87,7 @@ static t_file	*ft_lsprohibited(int *option, char *name, t_file *elem)
 	if (j)
 	{
 		free(elem);
-		return((t_file *)ft_lserrornull(name));
+		return ((t_file *)ft_lserrornull(name));
 	}
 	else
 	{
@@ -151,8 +115,8 @@ t_file			*ft_lsnewtfile(int *option, char *path, char *name)
 	elem->access = ft_lsidentifyaccess(path, buf.st_mode);
 	elem->blkcnt = buf.st_blocks;
 	elem->links = buf.st_nlink;
-	elem->owner = option[11] ? NULL : ft_strdup(userNameFromId(buf.st_uid));
-	elem->group = option[10] ? NULL : ft_strdup(groupNameFromId(buf.st_gid));
+	elem->owner = option[11] ? NULL : ft_strdup(usernamefromid(buf.st_uid));
+	elem->group = option[10] ? NULL : ft_strdup(groupnamefromid(buf.st_gid));
 	elem->size = buf.st_size;
 	if (option[5] == 'U' || option[5] == 'u')
 		elem->date = option[5] == 'U' ? buf.st_birthtime : buf.st_atime;

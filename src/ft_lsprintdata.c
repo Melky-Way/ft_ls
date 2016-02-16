@@ -12,41 +12,7 @@
 
 #include "ft_ls.h"
 
-#define MININT -2147483648
-#define MAXINT 2147483647
 #define TMP ((t_file *)tmp->content)
-
-static int		ft_lsgetsize(int n)
-{
-	int i;
-
-	i = 1;
-	if (n < 0)
-		n = (n == MININT) ? MAXINT : -n;
-	while (n >= ft_power(10, i))
-		i++;
-	return (i);
-}
-
-static void		ft_lsgetspaces(int *array, t_list **data)
-{
-	t_list		*tmp;
-	int			i;
-
-	tmp = (t_list *)*data;
-	while (tmp != NULL)
-	{
-		array[0] = array[0] < TMP->links ? TMP->links : array[0];
-		i = (int)ft_strlen(TMP->owner);
-		array[1] = array[1] < i ? i : array[1];
-		i = (int)ft_strlen(TMP->group);
-		array[2] = array[2] < i ? i : array[2];
-		array[3] = array[3] < TMP->size ? TMP->size : array[3];
-		tmp = tmp->next;
-	}
-	array[0] = ft_lsgetsize(array[0]);
-	array[3] = ft_lsgetsize(array[3]);
-}
 
 static void		ft_lsprintdate(time_t date, int mode)
 {
@@ -97,10 +63,32 @@ static void		ft_lsnameoptions(int option, char type, char *acc)
 	}
 }
 
+static void		ft_lsprintlongcore(int *option, t_list *tmp, int array[])
+{
+	ft_putchar(TMP->type);
+	ft_putstr(TMP->access);
+	ft_printspaces(1 + (array[0] - ft_lsgetsize(TMP->links)));
+	ft_putnbr(TMP->links);
+	ft_putstr(" ");
+	ft_putstr(TMP->owner);
+	if (!option[11])
+		ft_printspaces(2 + array[1] - ft_strlen(TMP->owner));
+	ft_putstr(TMP->group);
+	if (!option[10] || (option[10] && option[11]))
+		ft_printspaces(2 + array[2] - ft_strlen(TMP->group));
+	ft_printspaces((array[3] - ft_lsgetsize(TMP->size)));
+	ft_putnbr(TMP->size);
+	ft_lsprintdate(TMP->date, option[12]);
+	ft_putstr(TMP->name);
+	ft_lsnameoptions(option[8], TMP->type, TMP->access);
+	ft_putstr(TMP->lnk);
+	ft_putchar('\n');
+}
+
 static void		ft_lsprintlong(int *option, t_list **data, int dir)
 {
+	int			array[4] = {0};
 	t_list		*tmp;
-	int			array[4] = {0, 0, 0, 0};
 
 	ft_lsgetspaces(array, data);
 	if ((tmp = *data) != NULL && (ft_lstsize(tmp) > 1 || dir))
@@ -110,24 +98,7 @@ static void		ft_lsprintlong(int *option, t_list **data, int dir)
 	}
 	while (tmp != NULL)
 	{
-		ft_putchar(TMP->type);
-		ft_putstr(TMP->access);
-		ft_printspaces(1 + (array[0] - ft_lsgetsize(TMP->links)));
-		ft_putnbr(TMP->links);
-		ft_putstr(" ");
-		ft_putstr(TMP->owner);
-		if (!option[11])
-			ft_printspaces(2 + array[1] - ft_strlen(TMP->owner));
-		ft_putstr(TMP->group);
-		if (!option[10] || (option[10] && option[11]))
-			ft_printspaces(2 + array[2] - ft_strlen(TMP->group));
-		ft_printspaces((array[3] - ft_lsgetsize(TMP->size)));
-		ft_putnbr(TMP->size);
-		ft_lsprintdate(TMP->date, option[12]);
-		ft_putstr(TMP->name);
-		ft_lsnameoptions(option[8], TMP->type, TMP->access);
-		ft_putstr(TMP->lnk);
-		ft_putchar('\n');
+		ft_lsprintlongcore(option, tmp, array);
 		tmp = tmp->next;
 	}
 }

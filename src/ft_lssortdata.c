@@ -12,39 +12,6 @@
 
 #include "ft_ls.h"
 
-#define TMP ((t_file *)tmp->content)
-#define POST ((t_file *)post->content)
-
-#define ALPHASORT (!mode && ft_strcmp(TMP->name, POST->name) > 0)
-#define TIMESORT (mode == 1 && (TMP->date < POST->date || \
-			(POST->date == TMP->date && ft_strcmp(TMP->name, POST->name) > 0)))
-#define SIZESORT (mode == 2 && TMP->size < POST->size)
-
-/*static void		ft_ls_sort(t_list **data, int mode)
-{
-	void		*datatmp;
-	t_list		*tmp;
-	t_list		*post;
-	size_t		i;
-
-	tmp = *data;
-	while (tmp != NULL && (post = tmp->next) != NULL)
-	{
-		if (ALPHASORT || TIMESORT || SIZESORT)
-		{
-			datatmp = tmp->content;
-			i = tmp->content_size;
-			tmp->content = post->content;
-			tmp->content_size = post->content_size;
-			post->content = datatmp;
-			post->content_size = i;
-			tmp = *data;
-		}
-		else
-			tmp = post;
-	}
-}*/
-
 static t_list	*ft_lstreverse(t_list *data, t_list *next)
 {
 	t_list		*tmp;
@@ -117,13 +84,10 @@ void			ft_lssortdata(int *option, t_list **data)
 	if (option[9])
 		return ;
 	*data = ft_lstmergesort(*data, len, &ft_sortalpha);
-//	ft_ls_sort(data, 0);
 	if (option[6])
 		*data = ft_lstmergesort(*data, len, &ft_sortsize);
-//		ft_ls_sort(data, 2);
 	else if (option[4])
 		*data = ft_lstmergesort(*data, len, &ft_sorttime);
-//		ft_ls_sort(data, 1);
 	if (option[3] && *data != NULL)
 		*data = ft_lstreverse(*data, (*data)->next);
 }

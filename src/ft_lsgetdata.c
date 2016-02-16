@@ -31,7 +31,9 @@ static int			ft_lsgetdatadir(int *option, char *dir, t_list **data)
 	t_file			*tmpcontent;
 	char			*path;
 
-	if ((fd = opendir(dir)) == NULL || (tmpdata = readdir(fd)) == NULL)
+	if ((fd = opendir(dir)) == NULL)
+		return (ft_lserror(dir));
+	if ((tmpdata = readdir(fd)) == NULL)
 		return (ft_lserror(dir));
 	while (tmpdata != NULL)
 	{
@@ -79,43 +81,6 @@ int					ft_lsgetdata(int *option, char *dir, t_list **data)
 	if ((tmpcontent = ft_lsnewtfile(option, dir, NULL)) != NULL)
 		ft_lstpushback(data, (void *)tmpcontent, sizeof(tmpcontent));
 	else
-		return(ft_lserror(dir));
+		return (ft_lserror(dir));
 	return (0);
 }
-
-
-/*int					ft_lsgetdata(int *option, char *dir, t_list **data)
-{
-	t_file			*tmpcontent;
-	struct stat		sb;
-
-	if (lstat(dir, &sb) != 0)
-		return (ft_lserror(dir));
-	if (!option[7] && ((S_ISLNK(MODE) && !option[2]) || S_ISDIR(MODE)))
-		return (ft_lsgetdatadir(option, dir, data));
-	if ((S_ISLINK))
-	if ((tmpcontent = ft_lsnewtfile(option, dir, NULL)) != NULL)
-		ft_lstpushback(data, (void *)tmpcontent, sizeof(tmpcontent));
-	else
-		ft_lserror(dir);
-	return (0);
-}*/
-
-/*int					ft_lsgetdata(int *option, char *dir, t_list **data)
-{
-	t_file			*tmpcontent;
-	struct stat		sb;
-	struct stat		sb2;
-
-	if (lstat(dir, &sb))
-		return (ft_lserror(dir));
-	if (S_ISLNK(sb.stmode) && !stat(dir, &sb2) && S_ISDIR(sb2.st_mode))
-		then fuck you
-	if (!option[7] && S_ISDIR(sb.st_mode))
-		return (ft_lsgetdatadir(option, dir, data));
-	if ((tmpcontent = ft_lsnewtfile(option, dir, NULL)) != NULL)
-		ft_lstpushback(data, (void *)tmpcontent, sizeof(tmpcontent));
-	else
-		ft_lserror(dir);
-	return (0);
-}*/

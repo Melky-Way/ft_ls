@@ -57,14 +57,14 @@ int					ft_lserrorlist(t_list **dir)
 	return (-1);
 }
 
-void	*ft_lserrornull(char *name)
+void				*ft_lserrornull(char *name)
 {
 	ft_putstr_fd("ls: ", STDERR_FILENO);
 	perror(name);
 	return (NULL);
 }
 
-int		ft_lserror(char *name)
+int					ft_lserror(char *name)
 {
 	ft_putstr_fd("ls: ", STDERR_FILENO);
 	perror(name);

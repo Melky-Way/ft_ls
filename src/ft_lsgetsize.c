@@ -1,29 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lsgetuidgroup.c                                 :+:      :+:    :+:   */
+/*   ft_lsgetsize.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: msoudan <msoudan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/28 17:16:29 by msoudan           #+#    #+#             */
-/*   Updated: 2015/06/08 17:42:32 by msoudan          ###   ########.fr       */
+/*   Updated: 2016/02/02 21:56:02 by msoudan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-char				*usernamefromid(uid_t uid)
+#define MININT -2147483648
+#define MAXINT 2147483647
+
+int		ft_lsgetsize(int n)
 {
-	struct passwd	*pwd;
+	int i;
 
-	pwd = getpwuid(uid);
-	return (pwd == NULL) ? NULL : (char *)pwd->pw_name;
-}
-
-char				*groupnamefromid(gid_t gid)
-{
-	struct group	*grp;
-
-	grp = getgrgid(gid);
-	return (grp == NULL) ? NULL : (char *)grp->gr_name;
+	i = 1;
+	if (n < 0)
+		n = (n == MININT) ? MAXINT : -n;
+	while (n >= ft_power(10, i))
+		i++;
+	return (i);
 }

@@ -48,7 +48,8 @@ static t_list	*ft_getdirectories(char **argv)
 		if (!ft_strcmp(argv[i], "") || (cpy = ft_strdup(argv[i])) == NULL)
 		{
 			if (!ft_strcmp(argv[i], ""))
-				ft_putendl_fd("ls: fts_open: No such file or directory", STDERR_FILENO);
+				ft_putendl_fd("ls: fts_open: No such file or directory",
+					STDERR_FILENO);
 			ft_lstclear(&dir);
 			dir = NULL;
 			return (NULL);
@@ -106,7 +107,7 @@ static int		ft_getoptions(int *option, char **argv)
 				option[10] = 0;
 				option[11] = 0;
 			}
-			else if (ARG == 'U'|| ARG == 'c')
+			else if (ARG == 'U' || ARG == 'c')
 				option[5] = (int)ARG;
 			else if (ARG == 'F')
 				option[8] = (int)ARG;

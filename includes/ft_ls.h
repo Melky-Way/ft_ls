@@ -67,6 +67,11 @@
 */
 # include <errno.h>
 
+/*
+** getxattr
+*/
+#include <sys/xattr.h>
+
 typedef struct		s_file
 {
 	char			*name;
@@ -83,8 +88,8 @@ typedef struct		s_file
 
 t_list				*ft_lstmergesort(t_list *a, int n, \
 					int (*f)(t_list *a, t_list *b));
-char				*userNameFromId(uid_t uid);
-char				*groupNameFromId(gid_t gid);
+char				*usernamefromid(uid_t uid);
+char				*groupnamefromid(gid_t gid);
 char				*ft_lscreatepath(char *str1, char *str2);
 void				ft_printspaces(int n);
 int					ft_lsgetdata(int *option, char *directory, t_list **data);
@@ -100,6 +105,8 @@ void				*ft_lserrornull(char *name);
 int					ft_lserror(char *name);
 char				*ft_lsgetlnk(char *path);
 t_file				*ft_lsnewtfile(int *option, char *path, char *name);
+void				ft_lsgetspaces(int *array, t_list **data);
+int					ft_lsgetsize(int n);
 int					main(int argc, char **argv);
 
 #endif

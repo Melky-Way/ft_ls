@@ -12,34 +12,6 @@
 
 #include "ft_ls.h"
 
-/*t_list		*ft_lstaddsort(t_list *lst, t_list new, \
-			int (*f)(void *cnt1, void *cnt2))
-{
-	t_list	*tmp;
-	t_list	*prev;
-
-	if (new == NULL)
-		return (NULL);
-	if (lst == NULL)
-		return (new);
-	if ((tmp == lst) != NULL)
-	{
-		while (!(*f)(tmp->content, new->content) && tmp != NULL)
-		{
-			prev = tmp;
-			tmp = tmp->next;
-		}
-		if (prev == NULL)
-		{
-			new->next = tmp;
-			return (new);
-		}
-		prev->next = new;
-		new->next = tmp;
-	}
-	return (lst);
-}*/
-
 static t_list	*lstsplit(t_list *a, int len)
 {
 	t_list		*tmp;
