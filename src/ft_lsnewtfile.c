@@ -111,15 +111,40 @@ static char		*ft_lsidentifyaccess(char *path, mode_t st_mode)
 	return (access);
 }
 
+static t_file	*ft_lsprohibited(int *option, char *name, t_file *elem)
+{
+	int			i;
+	int			j;
+
+	i = 0;
+	j = 0;
+	while (i < 13)
+		j += option[i++] ? 1 : 0;
+	if (j)
+	{
+		free(elem);
+		return((t_file *)ft_lserrornull(name));
+	}
+	else
+	{
+		elem->name = ft_strdup(name);
+		elem->access = NULL;
+		elem->owner = NULL;
+		elem->group = NULL;
+		elem->lnk = NULL;
+		return (elem);
+	}
+}
+
 t_file			*ft_lsnewtfile(int *option, char *path, char *name)
 {
 	t_file		*elem;
 	struct stat	buf;
 
-	if (lstat(path, &buf) == -1)
-		return (NULL);
 	if ((elem = (t_file *)malloc(sizeof(*elem))) == NULL)
 		return (NULL);
+	if (lstat(path, &buf) == -1)
+		return (ft_lsprohibited(option, name, elem));
 	elem->type = ft_lsidentifytype(buf.st_mode);
 	elem->name = name == NULL ? ft_strdup(path) : ft_strdup(name);
 	elem->lnk = (elem->type == 'l' && IS_LONG) ? ft_lsgetlnk(path) : NULL;

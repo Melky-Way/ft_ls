@@ -96,6 +96,7 @@ void				ft_lsclearlist(t_list **data);
 int					ft_lsblkcnt(t_list *data);
 void				delete_elem(t_list **dir, t_list **tmp, t_list **prev);
 int					ft_lserrorlist(t_list **dir);
+void				*ft_lserrornull(char *name);
 int					ft_lserror(char *name);
 char				*ft_lsgetlnk(char *path);
 t_file				*ft_lsnewtfile(int *option, char *path, char *name);

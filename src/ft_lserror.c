@@ -22,8 +22,12 @@ void				delete_elem(t_list **dir, t_list **tmp, t_list **prev)
 	if (*prev != NULL)
 		(*prev)->next = *tmp;
 	if (del->content != NULL)
+	{
 		free(del->content);
+		del->content = NULL;
+	}
 	free(del);
+	del = NULL;
 }
 
 int					ft_lserrorlist(t_list **dir)
@@ -51,6 +55,13 @@ int					ft_lserrorlist(t_list **dir)
 		return (0);
 	}
 	return (-1);
+}
+
+void	*ft_lserrornull(char *name)
+{
+	ft_putstr_fd("ls: ", STDERR_FILENO);
+	perror(name);
+	return (NULL);
 }
 
 int		ft_lserror(char *name)

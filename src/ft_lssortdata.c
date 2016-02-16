@@ -113,7 +113,7 @@ void			ft_lssortdata(int *option, t_list **data)
 {
 	int			len;
 
-	len = *data == NULL ? 0 : ft_lstsize((*data));
+	len = (*data == NULL) ? 0 : ft_lstsize(*data);
 	if (option[9])
 		return ;
 	*data = ft_lstmergesort(*data, len, &ft_sortalpha);

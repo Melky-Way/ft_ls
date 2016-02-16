@@ -119,7 +119,7 @@ static void		ft_lsprintlong(int *option, t_list **data, int dir)
 		if (!option[11])
 			ft_printspaces(2 + array[1] - ft_strlen(TMP->owner));
 		ft_putstr(TMP->group);
-		if (!option[10])
+		if (!option[10] || (option[10] && option[11]))
 			ft_printspaces(2 + array[2] - ft_strlen(TMP->group));
 		ft_printspaces((array[3] - ft_lsgetsize(TMP->size)));
 		ft_putnbr(TMP->size);
