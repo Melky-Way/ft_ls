@@ -87,9 +87,10 @@ static void		ft_lsprintlongcore(int *option, t_list *tmp, int array[])
 
 static void		ft_lsprintlong(int *option, t_list **data, int dir)
 {
-	int			array[4] = {0};
+	int			array[4];
 	t_list		*tmp;
 
+	ft_memset(array, 0, sizeof(array));
 	ft_lsgetspaces(array, data);
 	if ((tmp = *data) != NULL && (ft_lstsize(tmp) > 1 || dir))
 	{

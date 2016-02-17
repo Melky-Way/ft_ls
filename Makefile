@@ -34,7 +34,6 @@ SRC += ft_printspaces.c
 SRC += ft_lsgetlnk.c
 SRC += main.c
 SRC += ft_lsnewtfile.c
-SRC += ft_lstmergesort.c
 SRC += ft_lsgetspaces.c
 SRC += ft_lsgetsize.c
 

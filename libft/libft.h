@@ -138,6 +138,8 @@ void				ft_lst_swap(t_list *lst1, t_list *lst2);
 void				*ft_realloc(void *ptr, size_t size);
 t_list				*ft_create_new(void *content, size_t size);
 int					ft_lstsize(t_list *list);
+t_list				*ft_lstmergesort(t_list *a, int n, \
+					int (*f)(t_list *a, t_list *b));
 
 /*
 ** Double Linked List

@@ -30,6 +30,18 @@ void				delete_elem(t_list **dir, t_list **tmp, t_list **prev)
 	del = NULL;
 }
 
+int					ft_printerror_option(char error)
+{
+	char			*str;
+
+	str = "usage: ls [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1] [file ...]";
+	ft_putstr_fd("ft_ls: illegal option -- ", STDERR_FILENO);
+	ft_putchar_fd(error, STDERR_FILENO);
+	ft_putchar_fd('\n', STDERR_FILENO);
+	ft_putendl_fd(str, STDERR_FILENO);
+	return (-1);
+}
+
 int					ft_lserrorlist(t_list **dir)
 {
 	t_list			*tmp;

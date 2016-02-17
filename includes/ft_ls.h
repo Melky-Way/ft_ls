@@ -70,7 +70,7 @@
 /*
 ** getxattr
 */
-#include <sys/xattr.h>
+# include <sys/xattr.h>
 
 typedef struct		s_file
 {
@@ -86,8 +86,6 @@ typedef struct		s_file
 	time_t			date;
 }					t_file;
 
-t_list				*ft_lstmergesort(t_list *a, int n, \
-					int (*f)(t_list *a, t_list *b));
 char				*usernamefromid(uid_t uid);
 char				*groupnamefromid(gid_t gid);
 char				*ft_lscreatepath(char *str1, char *str2);
@@ -101,6 +99,7 @@ void				ft_lsclearlist(t_list **data);
 int					ft_lsblkcnt(t_list *data);
 void				delete_elem(t_list **dir, t_list **tmp, t_list **prev);
 int					ft_lserrorlist(t_list **dir);
+int					ft_printerror_option(char error);
 void				*ft_lserrornull(char *name);
 int					ft_lserror(char *name);
 char				*ft_lsgetlnk(char *path);

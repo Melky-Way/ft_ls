@@ -102,7 +102,8 @@ SRCC +=	ft_dec_to_oct.c \
 		ft_strrchr.c \
 		ft_strstr.c \
 		ft_tolower.c \
-		ft_toupper.c
+		ft_toupper.c \
+		ft_lstmergesort.c
 
 OBJS = $(SRCC:.c=.o)
 

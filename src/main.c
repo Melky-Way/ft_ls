@@ -61,27 +61,24 @@ static t_list	*ft_getdirectories(char **argv)
 	return (dir);
 }
 
-static int		ft_printerror_option(char error)
+static int		ft_lsgetoptionsalt(int *option, char arg)
 {
-	char		*str;
-
-	str = "usage: ls [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1] [file ...]";
-	ft_putstr_fd("ft_ls: illegal option -- ", STDERR_FILENO);
-	ft_putchar_fd(error, STDERR_FILENO);
-	ft_putchar_fd('\n', STDERR_FILENO);
-	ft_putendl_fd(str, STDERR_FILENO);
-	return (-1);
+	if (arg == '1')
+	{
+		option[2] = 0;
+		option[10] = 0;
+		option[11] = 0;
+	}
+	else if (arg == 'U' || arg == 'c')
+		option[5] = (int)arg;
+	else if (arg == 'F')
+		option[8] = (int)arg;
+	else if (arg == 'A')
+		option[1] = !option[1] ? (int)arg : option[1];
+	else
+		return (0);
+	return (1);
 }
-
-/*
-** About the int array named "option" :
-** 0 = R ;
-** 1 = a ;
-** 2 = l or 1 ;
-** 3 = r ;
-** 4 = t ;
-** 5 = u or U ;
-*/
 
 static int		ft_getoptions(int *option, char **argv)
 {
@@ -101,19 +98,7 @@ static int		ft_getoptions(int *option, char **argv)
 		{
 			if ((found = ft_strchr(list, ARG)) != NULL)
 				option[found - list] = (int)ARG;
-			else if (ARG == '1')
-			{
-				option[2] = 0;
-				option[10] = 0;
-				option[11] = 0;
-			}
-			else if (ARG == 'U' || ARG == 'c')
-				option[5] = (int)ARG;
-			else if (ARG == 'F')
-				option[8] = (int)ARG;
-			else if (ARG == 'A')
-				option[1] = !option[1] ? (int)ARG : option[1];
-			else
+			else if (!ft_lsgetoptionsalt(option, ARG))
 				return (ft_printerror_option(ARG));
 		}
 		option[1] = option[9] ? (int)'a' : option[1];
@@ -123,11 +108,12 @@ static int		ft_getoptions(int *option, char **argv)
 
 int				main(int argc, char **argv)
 {
-	int			option[13] = {0};
+	int			option[13];
 	t_list		*directory;
 	int			print;
 	int			i;
 
+	ft_memset(option, 0, sizeof(option));
 	directory = NULL;
 	i = 1;
 	if (argc > 1 && (i = ft_getoptions(option, argv)) == -1)
