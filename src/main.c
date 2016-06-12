@@ -6,7 +6,7 @@
 /*   By: msoudan <msoudan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/19 23:45:58 by msoudan           #+#    #+#             */
-/*   Updated: 2016/02/02 22:27:18 by msoudan          ###   ########.fr       */
+/*   Updated: 2016/06/12 21:09:40 by msoudan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ int				main(int argc, char **argv)
 	{
 		print = (ft_lstsize(directory) > 1) ? 1 : 0;
 		if (ft_lserrorlist(&directory) != -1)
-			ft_ls(print, option, &directory);
+			ft_ls(print, option, &directory, 1);
 	}
 	return (0);
 }

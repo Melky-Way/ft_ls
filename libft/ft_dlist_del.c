@@ -6,7 +6,7 @@
 /*   By: msoudan <msoudan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/12/26 14:02:48 by msoudan           #+#    #+#             */
-/*   Updated: 2013/12/26 14:02:48 by msoudan          ###   ########.fr       */
+/*   Updated: 2016/06/10 17:34:10 by msoudan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void		ft_dlist_del(t_dlist **list)
 	t_dbl	*tmp;
 	t_dbl	*del;
 
-	if (list != NULL)
+	if (*list != NULL)
 	{
 		tmp = (*list)->head;
 		while (tmp != NULL)

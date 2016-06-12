@@ -6,7 +6,7 @@
 /*   By: msoudan <msoudan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/03/22 15:11:53 by msoudan           #+#    #+#             */
-/*   Updated: 2015/12/09 18:33:00 by msoudan          ###   ########.fr       */
+/*   Updated: 2016/06/09 16:36:14 by msoudan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ t_list				*ft_create_new(void *content, size_t size);
 int					ft_lstsize(t_list *list);
 t_list				*ft_lstmergesort(t_list *a, int n, \
 					int (*f)(t_list *a, t_list *b));
+t_list				*ft_lstreverse(t_list *data);
 
 /*
 ** Double Linked List
@@ -147,13 +148,16 @@ t_list				*ft_lstmergesort(t_list *a, int n, \
 
 t_dlist				*ft_dlist_new(void);
 void				ft_dlist_del(t_dlist **list);
-t_dlist				*ft_dlist_head(t_dlist *list, void *data, size_t size);
-t_dlist				*ft_dlist_tail(t_dlist *list, void *data, size_t size);
+int					ft_dlist_head(t_dlist **list, void *data, size_t size);
+int					ft_dlist_tail(t_dlist **list, void *data, size_t size);
 t_dlist				*ft_dlist_insert(t_dlist *list, void *data, int pos, \
 					size_t size);
 t_dlist				*ft_dlist_valdel(t_dlist *list, void *content);
 void				ft_dlist_iter(t_dlist *lst, void (*f)(t_dbl *elem));
 t_dbl				*ft_new_node(void *data, size_t size);
+t_dlist				*ft_dlstmergesort(t_dlist *a, int n, \
+					int (*f)(t_dbl *a, t_dbl *b));
+t_dlist				*ft_dlstreverse(t_dlist *data);
 
 /*
 ** Bonus

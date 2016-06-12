@@ -6,43 +6,62 @@
 /*   By: msoudan <msoudan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/28 17:16:29 by msoudan           #+#    #+#             */
-/*   Updated: 2015/04/15 17:37:03 by msoudan          ###   ########.fr       */
+/*   Updated: 2016/06/12 21:06:58 by msoudan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-static void		ft_lsclearcontent(t_file *content)
+static void		ft_lsclearcontent(t_list *elem)
 {
-	if (content != NULL)
+	t_file		*tmp;
+
+	if ((tmp = (t_file *)(elem)->content) != NULL)
 	{
-		if (content->access != NULL)
-			free(content->access);
-		if (content->lnk != NULL)
-			free(content->lnk);
-		if (content->owner != NULL)
-			free(content->owner);
-		if (content->group != NULL)
-			free(content->group);
-		if (content->name != NULL)
-			free(content->name);
-		free(content);
+		if (tmp->name != NULL)
+			free(tmp->name);
+		if (tmp->lnk != NULL)
+			free(tmp->lnk);
+		if (tmp->access != NULL)
+			free(tmp->access);
+		if (tmp->owner != NULL)
+			free(tmp->owner);
+		if (tmp->group != NULL)
+			free(tmp->group);
+		free(tmp);
+		elem->content = NULL;
 	}
+}
+
+static void		ft_lscleardcontent(t_dbl *elem)
+{
+	t_file		*tmp;
+
+	if ((tmp = (t_file *)elem->content) != NULL)
+	{
+		if (tmp->name != NULL)
+			free(tmp->name);
+		if (tmp->lnk != NULL)
+			free(tmp->lnk);
+		if (tmp->access != NULL)
+			free(tmp->access);
+		if (tmp->owner != NULL)
+			free(tmp->owner);
+		if (tmp->group != NULL)
+			free(tmp->group);
+		free(tmp);
+		elem->content = NULL;
+	}
+}
+
+void			ft_lscleardlist(t_dlist **data)
+{
+	ft_dlist_iter(*data, &ft_lscleardcontent);
+	ft_dlist_del(data);
 }
 
 void			ft_lsclearlist(t_list **data)
 {
-	t_list		*tmp;
-
-	if (*data != NULL)
-	{
-		tmp = (t_list *)*data;
-		while (tmp != NULL)
-		{
-			ft_lsclearcontent((t_file *)tmp->content);
-			tmp->content = NULL;
-			tmp = tmp->next;
-		}
-		ft_lstclear(data);
-	}
+	ft_lstiter(*data, &ft_lsclearcontent);
+	ft_lstclear(data);
 }

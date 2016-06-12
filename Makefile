@@ -6,7 +6,7 @@
 #    By: msoudan <msoudan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2013/12/17 18:21:40 by msoudan           #+#    #+#              #
-#    Updated: 2014/03/19 14:12:07 by msoudan          ###   ########.fr        #
+#    Updated: 2016/06/09 14:10:15 by msoudan          ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -36,6 +36,7 @@ SRC += main.c
 SRC += ft_lsnewtfile.c
 SRC += ft_lsgetspaces.c
 SRC += ft_lsgetsize.c
+SRC += ft_ls_args.c
 
 CFILES = $(patsubst %,$(CPATH)/%,$(SRC))
 OFILES = $(patsubst %.c,%.o,$(CFILES))

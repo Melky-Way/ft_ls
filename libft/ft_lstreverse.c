@@ -1,26 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstiter.c                                       :+:      :+:    :+:   */
+/*   ft_lstreverse.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: msoudan <msoudan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/02/24 11:25:00 by msoudan           #+#    #+#             */
-/*   Updated: 2016/06/09 22:38:08 by msoudan          ###   ########.fr       */
+/*   Created: 2016/06/08 15:45:24 by msoudan           #+#    #+#             */
+/*   Updated: 2016/06/12 17:12:11 by msoudan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void		ft_lstiter(t_list *lst, void (*f)(t_list *elem))
+static t_list	*ft_lstreverse_core(t_list *data, t_list *next)
 {
-	t_list	*tmp;
+	t_list		*tmp;
 
-	if ((tmp = lst) == NULL)
-		return ;
-	while (tmp)
-	{
-		(*f)(tmp);
-		lst = tmp->next;
-	}
+	if (next == NULL)
+		return (data);
+	tmp = next->next;
+	next->next = data;
+	if ((void *)data->next == (void *)next)
+		data->next = NULL;
+	if (tmp != NULL)
+		return (ft_lstreverse_core(next, tmp));
+	return (next);
+}
+
+t_list			*ft_lstreverse(t_list *data)
+{
+	return (ft_lstreverse_core(data, data->next));
 }

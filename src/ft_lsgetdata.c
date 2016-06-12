@@ -6,14 +6,16 @@
 /*   By: msoudan <msoudan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/28 17:16:29 by msoudan           #+#    #+#             */
-/*   Updated: 2016/02/02 22:12:58 by msoudan          ###   ########.fr       */
+/*   Updated: 2016/06/12 17:02:43 by msoudan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 #define NAME tmpdata->d_name
+#define T_DIR struct dirent
+#define T_STAT struct stat
 
-static int			ls_visibilityoptions(char *name, char option)
+static int	ls_visibilityoptions(char *name, char option)
 {
 	if (option == 'A' && (!ft_strcmp(name, ".") || !ft_strcmp(name, "..")))
 		return (0);
@@ -24,63 +26,51 @@ static int			ls_visibilityoptions(char *name, char option)
 	return (1);
 }
 
-static int			ft_lsgetdatadir(int *option, char *dir, t_list **data)
+static void	ft_ls_filldir(int *option, char *dir, char *name, t_dlist **data)
 {
-	DIR				*fd;
-	struct dirent	*tmpdata;
-	t_file			*tmpcontent;
-	char			*path;
+	char	*path;
+	t_file	*tmpcontent;
 
-	if ((fd = opendir(dir)) == NULL)
-		return (ft_lserror(dir));
-	if ((tmpdata = readdir(fd)) == NULL)
-		return (ft_lserror(dir));
+	path = ft_lscreatepath(dir, name);
+	if ((tmpcontent = ft_lsnewtfile(option, path, name)) != NULL)
+		ft_dlist_tail(data, (void *)tmpcontent, sizeof(tmpcontent));
+	free(path);
+}
+
+static char	*ft_lsbasename(char *name)
+{
+	int		i;
+
+	i = ft_strlen(name) - 1;
+	while (i >= 0 && name[i] && name[i] != '/')
+		i--;
+	return (name + i + 1);
+}
+
+int			ft_lsgetdatadir(int *option, char *dir, t_dlist **data)
+{
+	DIR		*fd;
+	T_DIR	*tmpdata;
+
+	fd = opendir(dir);
+	if (fd == NULL || (tmpdata = readdir(fd)) == NULL)
+		return (ft_lserror(ft_lsbasename(dir)));
 	while (tmpdata != NULL)
 	{
 		if (ls_visibilityoptions(NAME, option[1]))
-		{
-			path = ft_lscreatepath(dir, NAME);
-			if ((tmpcontent = ft_lsnewtfile(option, path, NAME)) != NULL)
-				ft_lstpushback(data, (void *)tmpcontent, sizeof(tmpcontent));
-			free(path);
-		}
+			ft_ls_filldir(option, dir, NAME, data);
 		tmpdata = readdir(fd);
 	}
 	closedir(fd);
-	if (*data == NULL)
-		return (-1);
-	return (0);
+	return (data == NULL ? -1 : 0);
 }
 
-static int			ft_lsisfile(int *option, char *dir)
+t_file		*ft_lsgetdata(int *option, char *dir)
 {
-	struct stat		sb;
-	struct stat		sb2;
+	t_file	*tmpcontent;
 
-	if (lstat(dir, &sb))
-		return (-1);
-	stat(dir, &sb2);
-	if (option[7])
-		return (1);
-	if (S_ISDIR(sb.st_mode))
-		return (0);
-	if (!option[2] && S_ISLNK(sb.st_mode) && S_ISDIR(sb2.st_mode))
-		return (0);
-	return (1);
-}
-
-int					ft_lsgetdata(int *option, char *dir, t_list **data)
-{
-	t_file			*tmpcontent;
-	int				isfile;
-
-	if ((isfile = ft_lsisfile(option, dir)) == -1)
-		return (ft_lserror(dir));
-	if (!isfile)
-		return (ft_lsgetdatadir(option, dir, data));
 	if ((tmpcontent = ft_lsnewtfile(option, dir, NULL)) != NULL)
-		ft_lstpushback(data, (void *)tmpcontent, sizeof(tmpcontent));
+		return (tmpcontent);
 	else
-		return (ft_lserror(dir));
-	return (0);
+		return (ft_lserrornull(dir));
 }

@@ -6,7 +6,7 @@
 #    By: msoudan <msoudan@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2013/11/21 12:34:07 by msoudan           #+#    #+#              #
-#    Updated: 2014/03/22 15:46:05 by msoudan          ###   ########.fr        #
+#    Updated: 2016/06/08 20:25:33 by msoudan          ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -103,7 +103,10 @@ SRCC +=	ft_dec_to_oct.c \
 		ft_strstr.c \
 		ft_tolower.c \
 		ft_toupper.c \
-		ft_lstmergesort.c
+		ft_lstmergesort.c \
+		ft_dlstmergesort.c \
+		ft_lstreverse.c \
+		ft_dlstreverse.c
 
 OBJS = $(SRCC:.c=.o)
 

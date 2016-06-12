@@ -6,7 +6,7 @@
 /*   By: msoudan <msoudan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/28 17:16:29 by msoudan           #+#    #+#             */
-/*   Updated: 2016/02/02 21:56:02 by msoudan          ###   ########.fr       */
+/*   Updated: 2016/06/12 21:06:25 by msoudan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static void		ft_lsnameoptions(int option, char type, char *acc)
 	}
 }
 
-static void		ft_lsprintlongcore(int *option, t_list *tmp, int array[])
+static void		ft_lsprintlongcore(int *option, t_dbl *tmp, int array[])
 {
 	ft_putchar(TMP->type);
 	ft_putstr(TMP->access);
@@ -85,17 +85,20 @@ static void		ft_lsprintlongcore(int *option, t_list *tmp, int array[])
 	ft_putchar('\n');
 }
 
-static void		ft_lsprintlong(int *option, t_list **data, int dir)
+static void		ft_lsprintlong(int *option, t_dlist **data, int dir)
 {
 	int			array[4];
-	t_list		*tmp;
+	t_dbl		*tmp;
+	char		*blk;
 
 	ft_memset(array, 0, sizeof(array));
 	ft_lsgetspaces(array, data);
-	if ((tmp = *data) != NULL && (ft_lstsize(tmp) > 1 || dir))
+	if ((tmp = (*data)->head) != NULL && ((*data)->lenght > 1 || dir))
 	{
+		blk = ft_itoa(ft_lsblkcnt(tmp));
 		ft_putstr("total ");
-		ft_putendl(ft_itoa(ft_lsblkcnt(tmp)));
+		ft_putendl(blk);
+		free(blk);
 	}
 	while (tmp != NULL)
 	{
@@ -104,13 +107,14 @@ static void		ft_lsprintlong(int *option, t_list **data, int dir)
 	}
 }
 
-void			ft_lsprintdata(int *option, t_list **data, int dir)
+void			ft_lsprintdata(int *option, t_dlist **data, int dir)
 {
-	t_list		*tmp;
+	t_dbl		*tmp;
 
-	tmp = *data;
+	if (*data == NULL || (tmp = (*data)->head) == NULL)
+		return ;
 	if (option[2] || option[10] || option[11])
-		ft_lsprintlong(option, &tmp, dir);
+		ft_lsprintlong(option, data, dir);
 	else
 	{
 		while (tmp != NULL)

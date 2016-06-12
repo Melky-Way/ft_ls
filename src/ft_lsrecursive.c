@@ -6,7 +6,7 @@
 /*   By: msoudan <msoudan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/04/08 17:18:58 by msoudan           #+#    #+#             */
-/*   Updated: 2016/01/28 19:38:07 by msoudan          ###   ########.fr       */
+/*   Updated: 2016/06/09 22:51:26 by msoudan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,15 @@ char		*ft_lscreatepath(char *str1, char *str2)
 	return (ret);
 }
 
-void		ft_lsrecursive(int print, int *op, char *old, t_list **data)
+void		ft_lsrecursive(int print, int *op, char *old, t_dlist **data)
 {
 	t_list	*dir;
-	t_list	*tmp;
+	t_dbl	*tmp;
 	char	*name;
 
 	dir = NULL;
-	tmp = *data;
+	if (*data == NULL || (tmp = (*data)->head) == NULL)
+		return ;
 	while (tmp != NULL)
 	{
 		if (((t_file *)tmp->content)->type == 'd' && NOT_CURRENT_NOR_PARENT)
@@ -47,6 +48,6 @@ void		ft_lsrecursive(int print, int *op, char *old, t_list **data)
 		}
 		tmp = tmp->next;
 	}
-	ft_lsclearlist(data);
-	ft_ls(print, op, &dir);
+	ft_lscleardlist(data);
+	ft_ls(print, op, &dir, 0);
 }

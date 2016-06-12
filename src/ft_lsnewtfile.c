@@ -6,7 +6,7 @@
 /*   By: msoudan <msoudan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/28 17:16:29 by msoudan           #+#    #+#             */
-/*   Updated: 2016/02/02 22:12:58 by msoudan          ###   ########.fr       */
+/*   Updated: 2016/06/12 21:07:26 by msoudan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,10 @@
 #define NO_USRX (access[2] == '-' || access[2] == 'S')
 #define NO_GRPX (access[5] == 'S' || access[5] == '-')
 #define XATTR_SIZE 10000
+#define BIRTH_NANO buf.st_birthtimespec.tv_nsec
+#define ATIME_NANO buf.st_atimespec.tv_nsec
+#define CTIME_NANO buf.st_ctimespec.tv_nsec
+#define MTIME_NANO buf.st_mtimespec.tv_nsec
 
 static char		ft_lsidentifytype(mode_t st_mode)
 {
@@ -121,6 +125,10 @@ t_file			*ft_lsnewtfile(int *option, char *path, char *name)
 	if (option[5] == 'U' || option[5] == 'u')
 		elem->date = option[5] == 'U' ? buf.st_birthtime : buf.st_atime;
 	else if (option[5] == 'c' || !option[5])
-		elem->date = option[5] == 'c' ? buf.st_ctime : buf.st_mtimespec.tv_sec;
+		elem->date = option[5] == 'c' ? buf.st_ctime : buf.st_mtime;
+	if (option[5] == 'U' || option[5] == 'u')
+		elem->nano = option[5] == 'U' ? BIRTH_NANO : ATIME_NANO;
+	else if (option[5] == 'c' || !option[5])
+		elem->nano = option[5] == 'c' ? CTIME_NANO : MTIME_NANO;
 	return (elem);
 }
