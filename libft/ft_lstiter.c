@@ -6,7 +6,7 @@
 /*   By: msoudan <msoudan@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/02/24 11:25:00 by msoudan           #+#    #+#             */
-/*   Updated: 2016/06/09 22:38:08 by msoudan          ###   ########.fr       */
+/*   Updated: 2016/06/13 14:04:12 by msoudan          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,6 @@ void		ft_lstiter(t_list *lst, void (*f)(t_list *elem))
 	while (tmp)
 	{
 		(*f)(tmp);
-		lst = tmp->next;
+		tmp = tmp->next;
 	}
 }
